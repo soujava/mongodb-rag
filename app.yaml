@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb-rag
+  labels:
+    app: mongodb-rag
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb-rag
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongodb-rag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-rag
+  template:
+    metadata:
+      labels:
+        app: mongodb-rag
+        version: v1
+    spec:
+      containers:
+      - name: mongodb-rag
+        image: mongodb-rag
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
