@@ -22,7 +22,7 @@ public class HRPolicyResource {
 
     @POST
     @Path("/ask")
-    public AskHRPolicyResponse ask(@Valid AskHRPolicyRequest request) {
+    public HRPolicyAnswer ask(@Valid HRPolicyQuestion request) {
         LOGGER.info("Received request: " + request);
         return service.ask(request);
     }
