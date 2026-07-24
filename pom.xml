@@ -22,6 +22,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.9.0</version>
+        </dependency>
+        <dependency>
             <groupId>dev.langchain4j.cdi</groupId>
             <artifactId>langchain4j-cdi-portable-ext</artifactId>
             <version>${langchain4j-cdi.version}</version>
