@@ -13,9 +13,9 @@ public class HRPolicyService {
     @Inject
     private HRPolicyAgent agent;
 
-    public AskHRPolicyResponse ask(AskHRPolicyRequest request) {
+    public HRPolicyAnswer ask(HRPolicyQuestion request) {
         var answer = agent.ask(request.question());
-        var response = new AskHRPolicyResponse(request.question(), answer);
+        var response = new HRPolicyAnswer(request.question(), answer);
         LOGGER.info("Generated response: " + response);
         return response;
     }
