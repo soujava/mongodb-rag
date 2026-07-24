@@ -3,14 +3,20 @@ package org.soujava.demos.rag;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.logging.Logger;
+
 @ApplicationScoped
 public class HRPolicyService {
 
+    private static final Logger LOGGER = Logger.getLogger(HRPolicyService.class.getName());
+
     @Inject
-    HRPolicyAgent agent;
+    private HRPolicyAgent agent;
 
     public AskHRPolicyResponse ask(AskHRPolicyRequest request) {
-        String answer = agent.ask(request.question());
-        return new AskHRPolicyResponse(request.question(), answer);
+        var answer = agent.ask(request.question());
+        var response = new AskHRPolicyResponse(request.question(), answer);
+        LOGGER.info("Generated response: " + response);
+        return response;
     }
 }
