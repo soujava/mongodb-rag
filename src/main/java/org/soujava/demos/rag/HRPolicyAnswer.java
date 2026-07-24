@@ -1,6 +1,6 @@
 package org.soujava.demos.rag;
 
-public record AskHRPolicyResponse(
+public record HRPolicyAnswer(
         String question,
         String answer
 ) {
