@@ -35,12 +35,44 @@ public class RagArchitectureFactory {
     @ConfigProperty(name = "dev.langchain4j.cdi.plugin.chat-model.config.api-key")
     private String apiKey;
 
+    @Inject
+    @ConfigProperty(name = "rag.embedding.model-name", defaultValue = "text-embedding-3-small")
+    private String embeddingModelName;
+
+    @Inject
+    @ConfigProperty(name = "rag.embedding.dimension", defaultValue = "1536")
+    private int embeddingDimension;
+
+    @Inject
+    @ConfigProperty(name = "rag.mongodb.database", defaultValue = "rag_app")
+    private String databaseName;
+
+    @Inject
+    @ConfigProperty(name = "rag.mongodb.collection", defaultValue = "embeddings")
+    private String collectionName;
+
+    @Inject
+    @ConfigProperty(name = "rag.mongodb.index", defaultValue = "embedding")
+    private String indexName;
+
+    @Inject
+    @ConfigProperty(name = "rag.mongodb.max-result-ratio", defaultValue = "10")
+    private long maxResultRatio;
+
+    @Inject
+    @ConfigProperty(name = "rag.retriever.max-results", defaultValue = "3")
+    private int maxResults;
+
+    @Inject
+    @ConfigProperty(name = "rag.retriever.min-score", defaultValue = "0.7")
+    private double minScore;
+
     @Produces
     @ApplicationScoped
     public EmbeddingModel createEmbeddingModel() {
         return OpenAiEmbeddingModel.builder()
                 .apiKey(apiKey)
-                .modelName("text-embedding-3-small")
+                .modelName(embeddingModelName)
                 .build();
     }
 
@@ -48,15 +80,10 @@ public class RagArchitectureFactory {
     @ApplicationScoped
     public EmbeddingStore<TextSegment> createVectorDatabase() {
         MongoClient client = MongoClients.create(mongodbURL);
-        MongoDatabase database = client.getDatabase("ai-patterns");
-        String databaseName = "rag_app";
-        String collectionName = "embeddings";
-        String indexName = "embedding";
-        Long maxResultRatio = 10L;
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions();
         Bson filter = null;
         Set<String> metadataFields = new HashSet<>();
-        IndexMapping indexMapping = new IndexMapping(1536, metadataFields);
+        IndexMapping indexMapping = new IndexMapping(embeddingDimension, metadataFields);
         Boolean createIndex = true;
         return new MongoDbEmbeddingStore(
                 client,
@@ -78,8 +105,8 @@ public class RagArchitectureFactory {
         return EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(store)
                 .embeddingModel(model)
-                .maxResults(3) // Fetch the top 3 most relevant chunks
-                .minScore(0.7) // Strict boundary: Ignore low-confidence matches
+                .maxResults(maxResults) // Fetch the top N most relevant chunks
+                .minScore(minScore) // Strict boundary: Ignore low-confidence matches
                 .build();
     }
 
