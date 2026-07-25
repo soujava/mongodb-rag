@@ -1,4 +1,5 @@
 = mongodb-rag
+:toc: auto
 
 Sample Helidon MP project that includes multiple REST operations.
 
