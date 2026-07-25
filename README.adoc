@@ -1,7 +1,41 @@
 = mongodb-rag
 :toc: auto
 
-Sample Helidon MP project that includes multiple REST operations.
+== Overview
+
+`mongodb-rag` is a sample application that demonstrates the
+https://en.wikipedia.org/wiki/Retrieval-augmented_generation[Retrieval-Augmented Generation (RAG)]
+pattern on the Jakarta EE / MicroProfile stack.
+
+The goal is to answer natural-language questions about a company's HR policies
+grounded in a private knowledge base, rather than relying on what the language
+model already knows. Policy text is embedded into vectors and stored in MongoDB;
+at query time the most relevant passages are retrieved and handed to the chat
+model as context, so answers stay faithful to the ingested documents.
+
+The application exposes two REST endpoints:
+
+* `POST /hr/policies/context` — ingest a piece of HR policy text into the
+  knowledge base. The text is embedded and stored, skipping near-duplicates.
+* `POST /hr/policies/ask` — ask a question; the service retrieves the most
+  relevant policy passages and lets the agent generate a grounded answer.
+
+=== Technology stack
+
+* *Java 21*
+* *https://helidon.io[Helidon MP 4]* — MicroProfile runtime (CDI, JAX-RS,
+  MicroProfile Config, Health, Metrics, OpenAPI).
+* *https://docs.langchain4j.dev[LangChain4j]* — orchestrates the RAG pipeline
+  (embeddings, retrieval, and the AI service agent), wired into CDI through the
+  LangChain4j CDI extension.
+* *https://openai.com[OpenAI]* — `text-embedding-3-small` for embeddings and a
+  chat model for answer generation.
+* *https://www.mongodb.com/products/platform/atlas-vector-search[MongoDB Atlas Vector Search]* —
+  the vector store that persists embeddings and performs similarity search.
+
+TIP: Configuration such as the OpenAI API key, model names, and the MongoDB
+connection string lives in `src/main/resources/META-INF/microprofile-config.properties`
+and can be overridden with environment variables via MicroProfile Config.
 
 == Build and run
 
