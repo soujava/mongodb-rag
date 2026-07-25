@@ -10,9 +10,12 @@ import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.logging.Logger;
+
 @ApplicationScoped
 public class HRPolicyContextService {
 
+    private static final Logger LOGGER = Logger.getLogger(HRPolicyContextService.class.getName());
     @Inject
     private EmbeddingModel embeddingModel;
 
