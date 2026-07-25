@@ -19,7 +19,7 @@ public class HRPolicyContextService {
     @Inject
     private EmbeddingStore<TextSegment> vectorDb;
 
-    public HRPolicyContextRequest add(HRPolicyContextRequest request) {
+    public HRPolicyContextResponse add(HRPolicyContextRequest request) {
         Document document = Document.from(request.context());
 
         var documentEmbedding = embeddingModel
@@ -35,10 +35,7 @@ public class HRPolicyContextService {
         );
 
         if (!result.matches().isEmpty()) {
-            return new HRPolicyContextResponse(
-                    false,
-                    "Similar HR policy context already exists."
-            );
+            return new HRPolicyContextResponse("Similar HR policy context already exists.");
         }
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
@@ -49,9 +46,6 @@ public class HRPolicyContextService {
 
         ingestor.ingest(document);
 
-        return new HRPolicyContextResponse(
-                true,
-                "The HR policy context was added to the knowledge base."
-        );
+        return new HRPolicyContextResponse("The HR policy context was added to the knowledge base.");
     }
 }
