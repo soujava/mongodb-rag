@@ -23,8 +23,10 @@ public class HRPolicyContextService {
     private EmbeddingStore<TextSegment> vectorDb;
 
     public HRPolicyContextResponse add(HRPolicyContextRequest request) {
+        LOGGER.info("Adding HR policy context to the knowledge base: " + request.context());
         Document document = Document.from(request.context());
 
+        LOGGER.fine("Embedding incoming HR policy context to check for duplicates");
         var documentEmbedding = embeddingModel
                 .embed(document.text())
                 .content();
@@ -38,9 +40,11 @@ public class HRPolicyContextService {
         );
 
         if (!result.matches().isEmpty()) {
+            LOGGER.info("Similar HR policy context already exists; skipping ingestion: " + request.context());
             return new HRPolicyContextResponse("Similar HR policy context already exists.");
         }
 
+        LOGGER.fine("No similar context found; ingesting the new HR policy context: " + request.context());
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentSplitter(DocumentSplitters.recursive(100, 10))
                 .embeddingModel(embeddingModel)
@@ -49,6 +53,7 @@ public class HRPolicyContextService {
 
         ingestor.ingest(document);
 
+        LOGGER.info("HR policy context was added to the knowledge base: " + request.context());
         return new HRPolicyContextResponse("The HR policy context was added to the knowledge base.");
     }
 }
