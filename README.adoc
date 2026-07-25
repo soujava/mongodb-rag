@@ -49,28 +49,51 @@ java -jar target/mongodb-rag.jar
 
 == Exercise the application
 
-Basic:
+The application exposes two endpoints under `/hr/policies`. First ingest some
+HR policy context into the knowledge base, then ask questions about it.
+
+=== Ingest HR policy context
+
+Send policy text to be embedded and stored. Near-duplicates are skipped.
 
 [source,bash]
 ----
-curl -X GET http://localhost:8080/simple-greet
-Hello World!
+curl -X POST http://localhost:8080/hr/policies/context \
+  -H "Content-Type: application/json" \
+  -d '{"context": "Remote work is permitted on Tuesdays and Thursdays. The annual hardware stipend has been increased to $1,500. Core hours are 10:00 AM to 3:00 PM EST."}'
 ----
 
-JSON:
+When the context is new it is ingested and the API responds with `201 Created`:
+
+[source,json]
+----
+{"inserted":true,"message":"The HR policy context was added to the knowledge base."}
+----
+
+If a similar context already exists the API responds with `200 OK` and skips ingestion:
+
+[source,json]
+----
+{"inserted":false,"message":"Similar HR policy context already exists."}
+----
+
+=== Ask a question
+
+Ask a natural-language question; the service retrieves the most relevant policy
+passages and the agent generates a grounded answer.
 
 [source,bash]
 ----
-curl -X GET http://localhost:8080/greet
-{"message":"Hello World!"}
+curl -X POST http://localhost:8080/hr/policies/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is my hardware stipend limit?"}'
+----
 
-curl -X GET http://localhost:8080/greet/Joe
-{"message":"Hello Joe!"}
+Example response:
 
-curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
-
-curl -X GET http://localhost:8080/greet/Jose
-{"message":"Hola Jose!"}
+[source,json]
+----
+{"question":"What is my hardware stipend limit?","answer":"Your annual hardware stipend is $1,500."}
 ----
 
 == Try health
