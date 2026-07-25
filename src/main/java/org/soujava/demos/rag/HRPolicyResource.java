@@ -35,16 +35,16 @@ public class HRPolicyResource {
     @POST
     @Path("/context")
     public Response addContext(@Valid HRPolicyContextRequest request) {
-
-        HRPolicyContextResponse response =
-                contextService.add(request);
+        LOGGER.info("Received request to add HR policy context: " + request);
+        var response = contextService.add(request);
 
         if (response.inserted()) {
+            LOGGER.info("HR policy context was added to the knowledge base: " + request.context());
             return Response.status(Response.Status.CREATED)
                     .entity(response)
                     .build();
         }
-
+        LOGGER.info("Similar HR policy context already exists; skipping ingestion: " + request.context());
         return Response.ok(response).build();
     }
 }
