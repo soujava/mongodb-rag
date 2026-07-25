@@ -41,7 +41,7 @@ public class HRPolicyContextService {
 
         if (!result.matches().isEmpty()) {
             LOGGER.info("Similar HR policy context already exists; skipping ingestion: " + request.context());
-            return new HRPolicyContextResponse("Similar HR policy context already exists.");
+            return new HRPolicyContextResponse(       false,"Similar HR policy context already exists.");
         }
 
         LOGGER.fine("No similar context found; ingesting the new HR policy context: " + request.context());
@@ -54,6 +54,6 @@ public class HRPolicyContextService {
         ingestor.ingest(document);
 
         LOGGER.info("HR policy context was added to the knowledge base: " + request.context());
-        return new HRPolicyContextResponse("The HR policy context was added to the knowledge base.");
+        return new HRPolicyContextResponse(   true,"The HR policy context was added to the knowledge base.");
     }
 }
