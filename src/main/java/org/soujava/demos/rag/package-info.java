@@ -20,8 +20,8 @@
  *   <li>{@link org.soujava.demos.rag.HRPolicyAgent} &mdash; the LangChain4j AI
  *       service that generates grounded answers.</li>
  *   <li>Request/response records &mdash;
- *       {@link org.soujava.demos.rag.HRPolicyQuestion},
- *       {@link org.soujava.demos.rag.HRPolicyAnswer}, and their context
+ *       {@link HRPolicyQuestion},
+ *       {@link HRPolicyAnswer}, and their context
  *       counterparts, used as JSON payloads.</li>
  * </ul>
  *
@@ -31,3 +31,6 @@
  * @see org.soujava.demos.rag.producer
  */
 package org.soujava.demos.rag;
+
+import org.soujava.demos.rag.dto.HRPolicyAnswer;
+import org.soujava.demos.rag.dto.HRPolicyQuestion;
