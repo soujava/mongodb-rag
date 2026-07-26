@@ -1,4 +1,4 @@
-package org.soujava.demos.rag;
+package org.soujava.demos.rag.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
