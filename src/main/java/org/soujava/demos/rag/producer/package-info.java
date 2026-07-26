@@ -20,10 +20,12 @@
  *   <li>{@code ContentRetrieverProducer} &mdash; builds the
  *       {@link dev.langchain4j.rag.content.retriever.ContentRetriever} that
  *       queries the vector store for passages relevant to a question.</li>
- *   <li>{@code HRPolicyAgentProducer} &mdash; binds the chat model and retriever
- *       into the {@link org.soujava.demos.rag.HRPolicyAgent} that generates
- *       grounded answers.</li>
  * </ul>
+ *
+ * <p>The {@link org.soujava.demos.rag.HRPolicyAgent} itself is not produced here:
+ * it is registered declaratively with {@code @RegisterAIService}, and the CDI
+ * extension wires it with the default {@code ChatModel} and the
+ * {@code ContentRetriever} produced above.
  *
  * <p>The classes in this package are package-private on purpose: they are CDI
  * beans discovered by the container, not part of the application's public API.
