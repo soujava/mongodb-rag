@@ -9,6 +9,8 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.soujava.demos.rag.dto.HRPolicyContextRequest;
+import org.soujava.demos.rag.dto.HRPolicyContextResponse;
 
 import java.util.logging.Logger;
 
