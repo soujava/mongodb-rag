@@ -1,4 +1,4 @@
-package org.soujava.demos.rag;
+package org.soujava.demos.rag.dto;
 
 public record HRPolicyContextResponse(boolean inserted, String message) {
 }
