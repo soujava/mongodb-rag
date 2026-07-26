@@ -9,6 +9,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.soujava.demos.rag.dto.HRPolicyAnswer;
+import org.soujava.demos.rag.dto.HRPolicyContextRequest;
+import org.soujava.demos.rag.dto.HRPolicyQuestion;
 
 import java.util.logging.Logger;
 
