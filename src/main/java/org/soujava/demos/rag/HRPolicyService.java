@@ -2,6 +2,8 @@ package org.soujava.demos.rag;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.soujava.demos.rag.dto.HRPolicyAnswer;
+import org.soujava.demos.rag.dto.HRPolicyQuestion;
 
 import java.util.logging.Logger;
 
